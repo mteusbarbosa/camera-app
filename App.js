@@ -21,9 +21,9 @@ export default function App() {
   }, []);
 
   if (hasCameraPermission === undefined) {
-    return <Text>Requesting permissions...</Text>
+    return <Text>Aguardando permissões...</Text>
   } else if (!hasCameraPermission) {
-    return <Text>Permission for camera not granted. Please change this in settings.</Text>
+    return <Text>Permissão para câmera negada. Por favor atualize as configurações.</Text>
   }
 
   let takePic = async () => {
@@ -53,8 +53,8 @@ export default function App() {
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-        <Button title="Share" onPress={sharePic} />
-        {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
+        <Button title="Compartilhar" onPress={sharePic} />
+        {hasMediaLibraryPermission ? <Button title="Salvar" onPress={savePhoto} /> : undefined}
         <Button title="Discard" onPress={() => setPhoto(undefined)} />
       </SafeAreaView>
     );
@@ -63,7 +63,7 @@ export default function App() {
   return (
     <Camera style={styles.container} ref={cameraRef}>
       <View style={styles.buttonContainer}>
-        <Button title="Take Pic" onPress={takePic} />
+        <Button title="Tirar foto" onPress={takePic} />
       </View>
       <StatusBar style="auto" />
     </Camera>
