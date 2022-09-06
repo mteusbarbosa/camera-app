@@ -1,9 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { Camera } from 'expo-camera';
-import { shareAsync } from 'expo-sharing';
-import * as MediaLibrary from 'expo-media-library';
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  Image,
+} from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Camera } from "expo-camera";
+import { shareAsync } from "expo-sharing";
+import * as MediaLibrary from "expo-media-library";
 
 export default function App() {
   let cameraRef = useRef();
@@ -14,23 +21,29 @@ export default function App() {
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
-      const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
+      const mediaLibraryPermission =
+        await MediaLibrary.requestPermissionsAsync();
       setHasCameraPermission(cameraPermission.status === "granted");
       setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
     })();
   }, []);
 
   if (hasCameraPermission === undefined) {
-    return <Text>Aguardando permissões...</Text>
+    return <Text>Aguardando permissões...</Text>;
   } else if (!hasCameraPermission) {
-    return <Text>Permissão para câmera negada. Por favor atualize as configurações.</Text>
+    return (
+      <Text>
+        Permissão para câmera negada. Por favor atualize as configurações do
+        aplicativo.
+      </Text>
+    );
   }
 
   let takePic = async () => {
     let options = {
       quality: 1,
       base64: true,
-      exif: false
+      exif: false,
     };
 
     let newPhoto = await cameraRef.current.takePictureAsync(options);
@@ -52,15 +65,21 @@ export default function App() {
 
     return (
       <SafeAreaView style={styles.container}>
-        <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+        <Image
+          style={styles.preview}
+          source={{ uri: "data:image/jpg;base64," + photo.base64 }}
+        />
         <Button title="Compartilhar" onPress={sharePic} />
-        {hasMediaLibraryPermission ? <Button title="Salvar" onPress={savePhoto} /> : undefined}
-        <Button title="Discard" onPress={() => setPhoto(undefined)} />
+        {hasMediaLibraryPermission ? (
+          <Button title="Salvar" onPress={savePhoto} />
+        ) : undefined}
+        <Button title="Apagar" onPress={() => setPhoto(undefined)} />
       </SafeAreaView>
     );
   }
 
   return (
+
     <Camera style={styles.container} ref={cameraRef}>
       <View style={styles.buttonContainer}>
         <Button title="Tirar foto" onPress={takePic} />
@@ -73,17 +92,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
+    backgroundColor: "#fff",
+    alignSelf: "flex-end",
   },
   preview: {
-    alignSelf: 'stretch',
-    flex: 1
-  }
+    alignSelf: "stretch",
+    flex: 1,
+  },
 });
